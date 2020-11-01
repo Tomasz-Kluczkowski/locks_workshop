@@ -5,7 +5,8 @@ from threading import Lock
 class ThreadSafeATM:
     """
     We use monitor pattern here - each operation is guarded by the lock.
-    Note: in add_funds we wrap adding in a lock instead of a for loop only to have more chances for the code to fail.
+    Note: in add_funds we wrap add operation in a lock instead of a for loop only to have more chances for the code to
+    fail if we comment out the with self.__balance_lock line...
     This way we can easier prove that the lock actually protects the _balance correctly.
     """
     def __init__(self, balance: int):
@@ -13,7 +14,9 @@ class ThreadSafeATM:
         self._balance = balance
 
     def add_funds(self, amount: int):
-        """Normally we should put the lock on the entire for loop but to prove correctness we do it on the add part"""
+        """
+        We are deliberately doing this in this way to expose issues in multithreading (try to comment out line 21!!!).
+        """
         for i in range(amount):
             with self.__balance_lock:
                 self._balance += 1
