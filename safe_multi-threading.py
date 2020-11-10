@@ -17,8 +17,8 @@ class ThreadSafeATM:
         """
         We are deliberately doing this in this way to expose issues in multithreading (try to comment out line 21!!!).
         """
-        for i in range(amount):
-            with self.__balance_lock:
+        with self.__balance_lock:
+            for i in range(amount):
                 self._balance += 1
 
     @property
